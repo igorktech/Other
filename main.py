@@ -1,52 +1,80 @@
-import json
-import datetime
+import functools
 
 
 def main():
+    acts_n = int(input())
+    acts = {}
+    acts_size = {}
+    for _ in range(acts_n):
+        line = input().split(',')
+        acts[line[0]] = []
+        acts_size[line[0]] = int(line[1])
+    contend_n = int(input())
+    contenders = []
+    prefered_final = []
+    rating = []
+    penalty = []
+    for _ in range(contend_n):
+        inp = input().split(',')
+        contenders.append(inp[0])
+        prefered_final.append(inp[1])
+        rating.append(int(inp[2]))
+        penalty.append(int(inp[3]))
+        acts[inp[1]].append((inp[0], int(inp[2]), int(inp[3])))
 
-    data_json = input()
-    price_less = input()
-    date_after = input()
-    name_contains = input()
-    price_greater = input()
-    date_before = input()
+    def compare_by_penalty(left, right):
+        return -(right[2] - left[2])
 
-    data_json = json.loads(data_json)
-    price_less = int(price_less.split()[1])
+    def compare_by_rating(left, right):
+        return right[1] - left[1]
 
-    date_after_tmp = date_after.split()[1].split('.')
-    date_after = datetime.datetime(int(date_after_tmp[2]), int(date_after_tmp[1]), int(date_after_tmp[0]))
-    name_contains = name_contains.split()[1]
+    for contestants in acts.values():
+        contestants.sort(key=functools.cmp_to_key(compare_by_penalty))
+        contestants.sort(key=functools.cmp_to_key(compare_by_rating))
 
-    price_greater = int(price_greater.split()[1])
-    date_before_tmp = date_before.split()[1].split('.')
-    date_before = datetime.datetime(int(date_before_tmp[2]), int(date_before_tmp[1]), int(date_before_tmp[0]))
+    final_list = []
+    for finale_name, cont in acts.items():
+        filtered_contends = cont[:acts_size[finale_name]]
+        final_list += [x[0] for x in filtered_contends]
 
-    save_data = []
-    for id in data_json:
-        datet = id["date"].split('.')
-        date = datetime.datetime(int(datet[2]), int(datet[1]), int(datet[0]))
-        print(int(id["price"]))
-        if id["name"].lower().find(name_contains) < 0:
-            continue
-        if (price_greater > int(id["price"])) or (int(id["price"]) > price_less):
-            continue
-        if (date_after > date) or (date > date_before):
-            continue
-        save_data.append(id)
+    final_list.sort()
+    for f in final_list:
+        print(f)
 
-    print(save_data)
+    return 0
+
 
 if __name__ == '__main__':
     main()
 
-#input
-# [{"id": 1, "name": "Asus notebook","price": 1564,"date": "23.09.2021"},{"price": 2500, "id": 3, "date": "05.06.2020", "name": "Keyboardpods" }, {"date": "23.09.2021", "name": "Airpods","id": 5, "price": 2300}, {"name": "EaRPoDs", "id": 2, "date": "01.01.2022", "price": 2200}, { "id": 4, "date": "23.09.2021", "name": "Dell notebook",  "price": 2300}]
-# PRICE_LESS_THAN 2400
-# DATE_AFTER 23.09.2021
-# NAME_CONTAINS pods
-# PRICE_GREATER_THAN 2200
-# DATE_BEFORE 02.01.2022
 
-#expected result
-# [{'date': '23.09.2021', 'name': 'Airpods', 'id': 5, 'price': 2300}, {'name': 'EaRPoDs', 'id': 2, 'date': '01.01.2022', 'price': 2200}]
+#input
+# 2
+# cloud_developer,2
+# cloud_hacker,3
+# 5
+# anonymous,cloud_hacker,6,0
+# bjarne_stroustrup,cloud_developer,6,1
+# julian_assange,cloud_hacker,5,100500
+# bill_gates,cloud_developer,3,1
+# guccifer,cloud_hacker,2,0
+
+#result
+# anonymous
+# bill_gates
+# bjarne_stroustrup
+# guccifer
+# julian_assange
+
+#input
+# 2
+# ear_flying,1
+# sun_bathing,1
+# 3
+# cheburashka,ear_flying,11,100
+# dambo,ear_flying,10,0
+# crocodile_gena,sun_bathing,11,10
+
+# result
+# cheburashka
+# crocodile_gena
