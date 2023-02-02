@@ -1,9 +1,10 @@
 #include "resource.h"
 
-IDR_BYTECODE_GEOMETRY ShaderObject "GeometryShader.cso"
+
 IDR_BYTECODE_VERTEX ShaderObject "vertex.cso"
 IDR_BYTECODE_PIXEL ShaderObject "pixel.cso"
 IDR_BYTECODE_COMPUTE ShaderObject "compute.cso"
+IDR_BYTECODE ShaderObject "GeometryShader.cso"
 // Скрипт ресурсов, созданный в Microsoft Visual C++.
-//
+//Users\ik76\Documents\GitHub\Other\x64\Debug\geomerty.c
 

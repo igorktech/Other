@@ -9,22 +9,22 @@ cbuffer MVPConstantBuffer : register(b0)
 struct VSInput
 {
     float4 position : SV_POSITION;
-    // float4 color : COLOR;
-    float2 outTexCoord : TEXCOORD;
+    float4 color : COLOR;
+    // float2 outTexCoord : TEXCOORD;
 };
 
-// PSInput main(float4 position : POSITION, float4 color : COLOR)
-// {
-//     PSInput result;
-//     float4 pos = position;
-//     pos = mul(pos, model);
-//     pos = mul(pos, view);
-//     pos = mul(pos, projection);
-//     result.position = pos;
-//     result.color = color;
-//
-//     return result;
-// }
+VSInput main(float4 position : POSITION, float4 color : COLOR)
+{
+    VSInput result;
+    float4 pos = position;
+    pos = mul(pos, model);
+    pos = mul(pos, view);
+    pos = mul(pos, projection);
+    result.position = pos;
+    result.color = color;
+
+    return result;
+}
 
 
 
@@ -51,33 +51,50 @@ struct VSInput
 //     float2 texCoord : TEXCOORD;
 // };
 
-VSInput main(VSInput input/*float4 position : POSITION, float4 color : COLOR*/)
-{
-         VSInput result;
-    VSInput output;
-    float4 pos = input.position;
-     pos = mul(pos, model);
-     pos = mul(pos, view);
-     pos = mul(pos, projection);
-     result.position = pos;
-    result.outTexCoord = input.outTexCoord;
-    // result.color = input.color;
-    output = result;
+// VSInput main(VSInput input/*float4 position : POSITION, float4 color : COLOR*/)
+// {
+//          VSInput result;
+//     VSInput output;
+//     float4 pos = input.position;
+//      pos = mul(pos, model);
+//      pos = mul(pos, view);
+//      pos = mul(pos, projection);
+//      result.position = pos;
+//     result.outTexCoord = input.outTexCoord;
+//     // result.color = input.color;
+//     output = result;
+//
+//      
+//     // VertexOutput output;
+//
+//     // Perform vertex transformation
+//     // output.position = mul(float4(result.position), worldViewProj);
+//     // output.normal = input.normal;
+//     // output.texCoord = input.texCoord;
+//
+//     // Randomly discard vertices based on decimation ratio
+//     // if (0.8 < frac(result.position.x * result.position.y * result.position.z * 31337.0)){}
+//     // output.position.w = 0.0;
+//     return output;
+//     // return output;
+// }
 
-     
-    // VertexOutput output;
 
-    // Perform vertex transformation
-    // output.position = mul(float4(result.position), worldViewProj);
-    // output.normal = input.normal;
-    // output.texCoord = input.texCoord;
 
-    // Randomly discard vertices based on decimation ratio
-    // if (0.8 < frac(result.position.x * result.position.y * result.position.z * 31337.0)){}
-    // output.position.w = 0.0;
-    return output;
-    // return output;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

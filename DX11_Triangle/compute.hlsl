@@ -88,19 +88,19 @@ void main(uint3 id : SV_DispatchThreadID)
  // // = 0 * acc;
  //    // velocity[id.x] += acc;
  //    indexBuffer[id.x] = 0;
-    uint index = id.x;
-    float2 acc = float2(0, 0);
-    for (uint i = 0; i < 20000; i++)
-    {
-        // Вектор от одной точки до другой
-        float2 diff = position[i] - position[id.x];
-        // Берем минимальное значение модуля вектора, чтобы не рассматривать случай 0-вектора
-        float len = max(1e-10, length(diff));
-        float k = 1e-9 * (len - 0.25) / len;
-        acc += k * diff;
-    }
+    //////uint index = id.x;
+    //////float2 acc = float2(0, 0);
+    //////for (uint i = 0; i < 20000; i++)
+    //////{
+    //////    // Вектор от одной точки до другой
+    //////    float2 diff = position[i] - position[id.x];
+    //////    // Берем минимальное значение модуля вектора, чтобы не рассматривать случай 0-вектора
+    //////    float len = max(1e-10, length(diff));
+    //////    float k = 1e-9 * (len - 0.25) / len;
+    //////    acc += k * diff;
+    //////}
 
-    position[id.x] += /*velocity[id.x] +*/20000.5 * acc;
+    //////position[id.x] += /*velocity[id.x] +*/20000.5 * acc;
 }
 
 

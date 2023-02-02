@@ -1,13 +1,100 @@
-// struct PSInput
-// {
-//     float4 position : SV_POSITION;
-//     float4 color : COLOR;
-// };
+struct PSInput
+{
+	float4 position : SV_POSITION;
+	float4 color : COLOR;
+};
+
+float4 main(PSInput input) : SV_TARGET
+{
+    
+	return input.color;
+}
+
+
+float4x4 Inv(float4x4 mat)
+{
+	float4x4 inverse;
+	float m00 = mat[0][0], m01 = mat[0][1], m02 = mat[0][2], m03 = mat[0][3],
+	      m10 = mat[1][0], m11 = mat[1][1], m12 = mat[1][2], m13 = mat[1][3],
+	      m20 = mat[2][0], m21 = mat[2][1], m22 = mat[2][2], m23 = mat[2][3],
+	      m30 = mat[3][0], m31 = mat[3][1], m32 = mat[3][2], m33 = mat[1][3];
+	// Calculate the determinant of the matrix
+    float det = m00 * (m11 * m22 - m21 * m12) -
+		m01 * (m10 * m22 - m12 * m20) +
+		m02 * (m10 * m21 - m11 * m20);
+
+	// Check if the matrix is invertible
+	// if (abs(det) < 1e-6)
+	// {
+	// 	// Handle non-invertible matrix
+	// 	// (e.g. return identity matrix or throw an exception)
+ //        return nullptr;
+ //    }
+
+	// Calculate the inverse of the matrix
+	float invdet = 1.0f / det;
+	inverse[0][0] = (m11 * m22 - m21 * m12) * invdet;
+	inverse[0][1] = (m02 * m21 - m01 * m22) * invdet;
+	inverse[0][2] = (m01 * m12 - m02 * m11) * invdet;
+	inverse[0][3] = 0.0f;
+	inverse[1][0] = (m12 * m20 - m10 * m22) * invdet;
+	inverse[1][1] = (m00 * m22 - m02 * m20) * invdet;
+	inverse[1][2] = (m10 * m02 - m00 * m12) * invdet;
+	inverse[1][3] = 0.0f;
+	inverse[2][0] = (m10 * m21 - m20 * m11) * invdet;
+	inverse[2][1] = (m20 * m01 - m00 * m21) * invdet;
+	inverse[2][2] = (m00 * m11 - m10 * m01) * invdet;
+	inverse[2][3] = 0.0f;
+	inverse[3][0] = -(m10 * m00 + m31 * m10 + m32 * m20);
+	inverse[3][1] = -(m30 * m01 + m31 * m11 + m32 * m21);
+	inverse[3][2] = -(m30 * m02 + m31 * m12 + m32 * m22);
+	inverse[3][3] = 1.0f;
+	return inverse;
+}
+
 // float4 main(PSInput input) : SV_TARGET
 // {
+//     
+// 	// return input.color;
+//
+// float4 vPos = float4(0, 0, 0,0);
+//
+//     //Read the vertex average from the cluster map;
+//    
+//
+// int iCount = mDataWorld.w;
+//     //Only compute optimal position if there are vertices in this cluster
+//     if(iCount !=0)
+//     {
+// 	    //Read all the data from the clustermap to recunstruct the quadratic
+//         mDataA0 = tClusterMap1.SampleLevel(sClusterMap1, vTexCoord.tex_coord, 0);
+//         mDataA1 = tClusterMap2.SampleLevel(sClusterMap2, vTexCoord.tex_coord, 0);
+//         mDataB = tClusterMap3.SampleLevel(sClusterMap3, vTexCoord.tex_coord, 0);
+//
+//         // re-assembling the quadric
+//         float4x4 Q;
+//
+// float4 qB = float4(0,0,0,1);
+// float qC = mDataA1.z;
+//
+//         //Determine if inverting A is stable, if so, compute optimal position
+//         // If not, defaut to using the average position
+// const float SINGULAR_THRESHOLD = 1e-11;
+// 		// if (determinant( quadricA) > SINGULAR_THRESHOLD)
+//   //           vPos = -mul(SymInv(quadricA), quadricB);
+//         if (determinant(Q) > SINGULAR_THRESHOLD)
+//             vPos = mul(Inv(Q), qB);
+//         else
+//             vPos = mDataWorld.xyz / mDataWorld.w;
+//     }
+//     input.position = vPos;
 //     return input.color;
+//
 // }
 
+
+
+/*
 struct PSInput
 {
     float4 position : SV_POSITION;
@@ -90,6 +177,9 @@ float3 main(PSInput vTexCoord) : SV_TARGET
 
 
 }
+
+*/
+
 
 //Read the vertex average from the cluster map
 
